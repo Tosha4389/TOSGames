@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 
-// 55
+// 50
 
 public class Tank : MonoBehaviour
 {
@@ -19,12 +19,9 @@ public class Tank : MonoBehaviour
 
     [Header("Автоматически:")]    
     public Transform turret;
-
     public BorderCheck borderCheck;
     public Shell shell;
-    public new Rigidbody rigidbody;
 
-    private Transform parent;
     private float xLimit;
     private float yLimit;    
     private IEnumerator coruntine;
@@ -41,8 +38,6 @@ public class Tank : MonoBehaviour
         }
 
         borderCheck = GetComponent<BorderCheck>();
-        rigidbody = GetComponent<Rigidbody>();
-        parent = GetComponent<Transform>();
     }
 
     void Start()
@@ -62,15 +57,22 @@ public class Tank : MonoBehaviour
 
     private void Movement()
     {
-        float moveX = Input.GetAxis("Horizontal") * speedRotate * 3f * Time.fixedDeltaTime;
-        float moveY = Input.GetAxis("Vertical") * speedMove * Time.fixedDeltaTime;
+        float moveX = Input.GetAxis("Horizontal");
+        float moveY = Input.GetAxis("Vertical");
 
-        rigidbody.AddRelativeForce(Vector3.up * moveY, mode: ForceMode.VelocityChange);         
-        rigidbody.AddRelativeTorque(Vector3.back * moveX, mode: ForceMode.VelocityChange);
-
+        Vector3 positionTank = new Vector3(0, moveY, 0);
+        transform.Translate(positionTank * speedMove * Time.fixedDeltaTime);
+                
         xLimit = Mathf.Clamp(transform.position.x, -borderCheck.screenWidth + borderCheck.size, borderCheck.screenWidth - borderCheck.size);
         yLimit = Mathf.Clamp(transform.position.y, 0f + borderCheck.size, transform.position.y);
         transform.position = new Vector3(xLimit, yLimit, transform.position.z);
+                
+        // Реверс поворота при движении задним ходом
+        if(moveY < 0) {
+            transform.Rotate(0, 0, -moveX * speedRotate * Time.fixedDeltaTime);
+        } else {
+            transform.Rotate(0, 0, moveX * speedRotate * Time.fixedDeltaTime);
+        }        
 
 
     }
@@ -81,14 +83,14 @@ public class Tank : MonoBehaviour
         Vector3 difference = mousePosition - transform.position;
         difference.Normalize();
         float rotateTurret = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-        turret.transform.rotation = Quaternion.Euler(0f, 0f, rotateTurret - 90f);
+        turret.transform.rotation = Quaternion.Euler(0f, 0f, rotateTurret - 90f);      
 
     }
 
     public void Fire()
     {
         if(Input.GetMouseButton(0) && reload == false) {
-            Instantiate(shellTankPrefab, parent); 
+            Instantiate(shellTankPrefab); 
             StartCoroutine(Reload(fireRate));
             
         }
