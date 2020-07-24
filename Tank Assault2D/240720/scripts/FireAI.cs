@@ -17,14 +17,14 @@ public class FireAI : MonoBehaviour
     public Transform turret;
     public MoveAI moveAI;
 
-    private Transform parent;
+    //private Transform parent;
     private IEnumerator coroutine;
 
     private void Awake()
     {
         moveAI = GetComponent<MoveAI>();
         turret = gameObject.transform.GetChild(0);
-        parent = GetComponent<Transform>();
+        //parent = GetComponent<Transform>();
     }
 
     private void Start()
@@ -42,7 +42,7 @@ public class FireAI : MonoBehaviour
     private IEnumerator Fire(float wait)
     {
         while(true) {
-            shellEnemy = Instantiate(shellEnemyPrefab, parent);
+            shellEnemy = Instantiate(shellEnemyPrefab /*parent*/);
             shellEnemy.transform.position = turret.transform.position;
             shellEnemy.transform.rotation = turret.transform.rotation;
             yield return new WaitForSeconds(wait);

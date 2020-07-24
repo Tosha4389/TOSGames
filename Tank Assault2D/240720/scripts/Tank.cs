@@ -24,7 +24,7 @@ public class Tank : MonoBehaviour
     public Shell shell;
     public new Rigidbody rigidbody;
 
-    private Transform parent;
+    //private Transform parent;
     private float xLimit;
     private float yLimit;    
     private IEnumerator coruntine;
@@ -42,7 +42,7 @@ public class Tank : MonoBehaviour
 
         borderCheck = GetComponent<BorderCheck>();
         rigidbody = GetComponent<Rigidbody>();
-        parent = GetComponent<Transform>();
+        //parent = GetComponent<Transform>();
     }
 
     void Start()
@@ -88,7 +88,7 @@ public class Tank : MonoBehaviour
     public void Fire()
     {
         if(Input.GetMouseButton(0) && reload == false) {
-            Instantiate(shellTankPrefab, parent); 
+            Instantiate(shellTankPrefab /*parent*/); 
             StartCoroutine(Reload(fireRate));
             
         }

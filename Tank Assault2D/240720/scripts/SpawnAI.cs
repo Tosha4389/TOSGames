@@ -13,7 +13,7 @@ public class SpawnAI : MonoBehaviour
     [Header("Автоматически")]
     public BorderCheck borderCheck;
     public List<GameObject> listEnemy;
-    public Transform parent;
+    //public Transform parent;
     private float delayTime = 1f;
     private float delay;
 
@@ -21,7 +21,7 @@ public class SpawnAI : MonoBehaviour
     private void Awake()
     {
         borderCheck = GetComponent<BorderCheck>();
-        parent = GetComponent<Transform>();
+        //parent = GetComponent<Transform>();
 
     }
 
@@ -41,7 +41,7 @@ public class SpawnAI : MonoBehaviour
 
     private void Spawn()
     {
-        Instantiate(enemyTankPrefab, transform.position, transform.rotation, parent);
+        Instantiate(enemyTankPrefab, transform.position, transform.rotation /*parent*/);
         listEnemy.Add(enemyTankPrefab);
     }
 
