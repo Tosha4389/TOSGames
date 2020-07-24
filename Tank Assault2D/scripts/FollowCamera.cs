@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 7
+// 10
 
 public class FollowCamera : MonoBehaviour
 {
@@ -17,14 +17,17 @@ public class FollowCamera : MonoBehaviour
 
     void FixedUpdate()
     {
-        
-        if(tank.transform.position.y >= 10f) {
-            transform.position = new Vector3(transform.position.x, tank.transform.position.y, transform.position.z);
+        if(tank) {
+            if(tank.transform.position.y >= 10f) {
+                transform.position = new Vector3(transform.position.x, tank.transform.position.y, transform.position.z);
 
+            } else {
+                transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            }
         } else {
             transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            Debug.LogError("Объект Танк не обнаружен");
         }
-
 
     }
 

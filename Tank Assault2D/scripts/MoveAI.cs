@@ -8,8 +8,9 @@ public class MoveAI : MonoBehaviour
 {
     [Header("Вручную")]
     public float offsetY = 2f;
-    public float radius = 1f; 
-    public float speed = 0.1f;    
+    public float radius = 1f;
+    public float speed = 0.1f;
+    public float timeStop = 1f;
 
 
     [Header("Автоматически")]
@@ -38,7 +39,7 @@ public class MoveAI : MonoBehaviour
     void Start()
     {
         pointFinish = new Vector3(0f, 0f, rigidbody.position.z);
-        coroutine = Stop(1f);
+        coroutine = Stop(timeStop);
         StartCoroutine(coroutine);
     }
 
@@ -49,7 +50,7 @@ public class MoveAI : MonoBehaviour
     }
 
     public void Move()
-    {            
+    {
         pointY.x = rigidbody.position.y - 3f;
         pointY.y = rigidbody.position.y - 1f;
 
@@ -57,7 +58,7 @@ public class MoveAI : MonoBehaviour
         pointX.y = rigidbody.position.x - 1f;
 
         Stop(1f);
-        
+
 
         distancePoint = pointFinish - rigidbody.position;
         distanceTarget = Tank.S.transform.position - rigidbody.position;
@@ -65,21 +66,20 @@ public class MoveAI : MonoBehaviour
 
 
         if(distanceTarget.sqrMagnitude >= 30f) {
-            move = speed;
-            rigidbody.MovePosition(rigidbody.position - pointFinish * dTime * move);
+            move = -speed;
+            rigidbody.AddForce(pointFinish.normalized * dTime * move, mode: ForceMode.VelocityChange);
             rigidbody.transform.up = pointFinish;
-
         }
-                
+
 
         if(distanceTarget.sqrMagnitude < 30f) {
-            move = 0f;            
+            move = 0f;
             rigidbody.MovePosition(rigidbody.position - pointFinish * dTime * move);
             rigidbody.transform.TransformDirection(transform.up);
         }
 
 
-        
+
     }
 
     private IEnumerator Stop(float waitTime)
