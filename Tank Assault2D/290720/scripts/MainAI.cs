@@ -15,9 +15,9 @@ public class MainAI : MonoBehaviour
 
 
     [Header("Автоматически")]
-    public BorderCheck borderCheck;
-    public new Rigidbody rigidbody;   
     public float searchDistance;
+    public BorderCheck borderCheck;
+    public new Rigidbody rigidbody;
     public Transform turret;
     public Vector3 tankPosition;
     public Vector3 distanceTank;
@@ -48,11 +48,12 @@ public class MainAI : MonoBehaviour
     private void Start()
     {
         stopTime = rotTime = Time.time;
-        searchDistance = borderCheck.screenHeight * 2 * searchDistanseCoeff / 10f;
+        
     }
 
     void FixedUpdate()
     {      
+
         DistanceTank();
         FindWay();
         EnemyMoving();
@@ -92,12 +93,17 @@ public class MainAI : MonoBehaviour
         }
 
         distanceTank = tankPosition - transform.position;
+        searchDistance = borderCheck.screenHeight * 2 * searchDistanseCoeff / 10f;
         return distanceTank;
     } 
 
 
     private void FindWay()
-    {        
+    {
+        moveOn = false;
+        if(distanceTank.magnitude <= searchDistance)
+            moveOn = true;
+
         //RaycastHit hit;
         //Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, searchDistance);        
 
