@@ -1,43 +1,38 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-
-//50
+[System.Serializable] public class FloatEvent : UnityEvent<float> { }
 
 public class UIManager : MonoBehaviour
 {
-    static public UIManager S;
+    static internal UIManager S;
+    internal FloatEvent eventScaleStripHp;
+    internal FloatEvent eventScaleStripShield;
 
     [Header("ИГРОВЫЕ")]
-    public GameObject gameOver;
-    public Texture2D cursorTexture;
-    public GameObject gameTextGO;
-    public GameObject hpStrip;
-    public GameObject shieldStrip;
-    public TextMeshProUGUI money;
+    [SerializeField] GameObject gameOver;
+    [SerializeField] Texture2D cursorTexture;
+    [SerializeField] GameObject gameTextGO;
+    [SerializeField] GameObject hpStrip;
+    [SerializeField] internal GameObject shieldStrip;
+    [SerializeField] TextMeshProUGUI money;
 
     [Header("АНДРОИД")]
-    public bool androidEditor = false;
-    public GameObject joyR;
-    public GameObject joyL;
-    public GameObject androidUI;
+    [SerializeField] internal bool androidEditor = false;
+    [SerializeField] internal GameObject androidUI;
 
-    [HideInInspector] public Vector2 leftJoy;
-    [HideInInspector] public Vector2 rightJoy;
-    [HideInInspector] public bool onMenu = false;
-    [HideInInspector] public bool restart = false;
-    [HideInInspector] public bool androidRuntime = false;
-    [HideInInspector] public bool winRuntime = false;
-    [HideInInspector] public CursorMode cursorMode = CursorMode.Auto;
-    [HideInInspector] public Vector2 hotSpot = Vector2.zero;
-    [HideInInspector] public FixedJoystick rigthFJ;
+    internal bool onMenu = false;
+    internal bool restart = false;
+    internal bool androidRuntime = false;
+    internal bool winRuntime = false;
+    internal CursorMode cursorMode = CursorMode.Auto;
+    internal Vector2 hotSpot = Vector2.zero;
 
     TextMeshProUGUI gameText;
-    FixedJoystick leftFJ;
+
 
     private void Awake()
     {        
@@ -49,8 +44,6 @@ public class UIManager : MonoBehaviour
         }
 
         OnMouseEnter();
-        rigthFJ = joyR.GetComponent<FixedJoystick>();
-        leftFJ = joyL.GetComponent<FixedJoystick>();
         gameText = gameTextGO.GetComponent<TextMeshProUGUI>();
 
         if(Application.platform == RuntimePlatform.Android /*|| Application.platform == RuntimePlatform.WindowsEditor*/) {
@@ -63,28 +56,18 @@ public class UIManager : MonoBehaviour
         if(Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor) {
             winRuntime = true;
             Application.targetFrameRate = 2000;
-        }       
+        }
 
+        if(eventScaleStripHp == null)
+            eventScaleStripHp = new FloatEvent();
+        if(eventScaleStripShield == null)
+            eventScaleStripShield = new FloatEvent();
     }
 
-    private void Start()
+    void Start()
     {
-        //ShieldStripScale(Tank.S.playerShield);
-    }
-
-    void Update()
-    {
-        InputProcessing();
-    }
-
-    void InputProcessing()
-    {
-        if(Input.GetKeyDown(KeyCode.Escape))
-            OnMenu();
-
-        leftJoy.x = leftFJ.Horizontal;
-        leftJoy.y = leftFJ.Vertical;
-        rightJoy = rigthFJ.Direction;
+        eventScaleStripHp.AddListener(HpStripScale);
+        eventScaleStripShield.AddListener(ShieldStripScale);
     }
 
     void OnMouseEnter()
@@ -143,7 +126,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void HpStripScale(float scale)
-    {
+    {        
         hpStrip.transform.localScale = new Vector3(scale, hpStrip.transform.localScale.y, hpStrip.transform.localScale.z);
     }
 

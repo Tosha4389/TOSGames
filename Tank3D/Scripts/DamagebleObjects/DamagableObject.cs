@@ -19,7 +19,7 @@ public class DamagableObject : MonoBehaviour, IDamagable
         wallAudio = GetComponent<AudioSource>();
     }
 
-    public void DecreaseHp(int damage)
+    public void DecreaseValue(int damage)
     {
         hp -= damage;
         if(hp <= 0)

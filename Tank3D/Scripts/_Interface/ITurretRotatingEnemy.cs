@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IDamagable
+public interface ITurretRotatingEnemy
 {
-    void DecreaseValue(int damage);
-
-    void DestroyGO();
+    void TurretRotate(Vector3 target);
 }

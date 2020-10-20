@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IDamagable
+public interface IIncreasable
 {
-    void DecreaseValue(int damage);
-
-    void DestroyGO();
+    void IncreasableValue(int value);
 }
