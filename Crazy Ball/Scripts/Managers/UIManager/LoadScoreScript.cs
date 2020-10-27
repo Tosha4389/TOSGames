@@ -6,15 +6,18 @@ using System;
 
 public class LoadScoreScript : MonoBehaviour
 {
+    //public List<PlayerScore> tempList;
     string path;
 
     public List<PlayerScore> LoadScore()
     {
         List<PlayerScore> scoreList = new List<PlayerScore>();
 
-        if(Application.platform == RuntimePlatform.Android)
-            path = Path.Combine(Application.persistentDataPath + "/PlayerName.json");
-         
+        if(Application.platform == RuntimePlatform.Android) {            
+            path = Path.Combine(Application.persistentDataPath, "PlayerName.json");
+        }
+
+
         if(Application.platform == RuntimePlatform.WindowsEditor)
             path = Application.dataPath + @"/PlayerName.json";
 
@@ -25,10 +28,12 @@ public class LoadScoreScript : MonoBehaviour
 
         try {
             string json = File.ReadAllText(path);
-            scoreList = JsonConvert.DeserializeObject<List<PlayerScore>>(json);
+            scoreList = JsonConvert.DeserializeObject<List<PlayerScore>>(json);            
+            Debug.Log("Лист загружен");
             return scoreList;
         }
-        catch(Exception) {            
+        catch(Exception) {
+            //Debug.Log("Лист не загружен");
             return scoreList;
         }
     }

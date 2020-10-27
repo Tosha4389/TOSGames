@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -9,10 +12,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] internal Text text;
     [SerializeField] internal TextMeshProUGUI scoreText;
 
+    IMenuUI menuUI;  
     LoadScoreScript loadScore;
     SaveScoreScript saveScore;
     OutputScore outputScore;
-    IMenuUI menuUI;    
+    ScrollContentUI scrollContent;
     bool onMenu = false;
     internal int ScoreSave { get; set; }
 
@@ -28,6 +32,12 @@ public class UIManager : MonoBehaviour
         loadScore = GetComponent<LoadScoreScript>();
         saveScore = GetComponent<SaveScoreScript>();
         outputScore = GetComponent<OutputScore>();
+        scrollContent = GetComponent<ScrollContentUI>();
+    }
+
+    private void Start()
+    {
+        StartCoroutine(OutputScoreTable());
     }
 
     public void ViewScoreUI(int score)
@@ -42,9 +52,8 @@ public class UIManager : MonoBehaviour
     }
 
     public void ViewTopScore()
-    {        
-        menuUI.LoadSceneMenu(2);
-        outputScore.OutputScoreUI();
+    {      
+        menuUI.LoadSceneMenu(2);        
     }
 
     public void RestartGame()
@@ -76,5 +85,14 @@ public class UIManager : MonoBehaviour
     public void SaveScoreMenu()
     {
         saveScore.SaveScoreMenu();
+    }
+
+    public IEnumerator OutputScoreTable()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if(SceneManager.GetActiveScene().buildIndex == 2) {
+            int str = outputScore.OutputScoreUI();
+            scrollContent.ScrollTable(str);
+        }        
     }
 }

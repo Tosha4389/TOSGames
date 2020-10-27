@@ -2,7 +2,8 @@
 
 public class PlayerMovement : MonoBehaviour, IMovement
 {
-    [SerializeField] int force = 40;
+    [SerializeField] int forceMove = 40;
+    [SerializeField] int forceJump;
     Rigidbody _rigidbody;
 
     private void Awake()
@@ -12,11 +13,11 @@ public class PlayerMovement : MonoBehaviour, IMovement
 
     public void Movement(Vector3 direction)
     {
-        _rigidbody.AddForce(direction * force * Time.deltaTime, ForceMode.Impulse);
+        _rigidbody.AddForce(direction * forceMove * Time.deltaTime, ForceMode.Impulse);
     }
 
     public void Jump(Vector3 direction)
     {
-        _rigidbody.AddForce(direction * force * Time.deltaTime, ForceMode.Impulse);
+        _rigidbody.AddForce(direction * forceJump * Time.deltaTime, ForceMode.Impulse);
     }
 }

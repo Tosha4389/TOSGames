@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class PlayerState : MonoBehaviour
 {
@@ -6,7 +7,7 @@ public class PlayerState : MonoBehaviour
     GameManager gameManager;
     IMovement move;
     IDestroyGO destroyGO;    
-    bool isGrounded = true;    
+    public bool isFlight = false;
 
     private void Awake()
     {        
@@ -17,7 +18,7 @@ public class PlayerState : MonoBehaviour
     private void Start()
     {
         inputManager = InputManager.S;
-        gameManager = GameManager.S;
+        gameManager = GameManager.S;        
     }
 
     private void FixedUpdate()
@@ -29,30 +30,12 @@ public class PlayerState : MonoBehaviour
     void Movement()
     {
         move.Movement(inputManager.directionMove);
-
-        //if(isGrounded)
-        //    move.Movement(inputManager.directionMove);
-        //else move.Movement(Vector3.zero);
     }
 
     void Jump()
     {
-        move.Jump(inputManager.directionJump);
-
-        //if(isGrounded)
-        //    move.Jump(inputManager.directionJump);
-        //else move.Jump(Vector3.zero);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {  
-        if(collision.transform.CompareTag("Enemy")) {            
-            destroyGO.DestroyObjects();
-            gameManager.GameOver();
-        }
-
-        if(collision.transform.CompareTag("Map"))
-            isGrounded = true;
+        if(!isFlight)
+            move.Jump(inputManager.directionJump);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -61,12 +44,28 @@ public class PlayerState : MonoBehaviour
             gameManager.IncreaseScore();
             other.gameObject.SetActive(false);
         }
+    }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.transform.CompareTag("Border"))
+            isFlight = false;
+
+        if(collision.transform.CompareTag("Enemy")) {            
+            destroyGO.DestroyObjects();
+            gameManager.GameOver();
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if(!collision.transform.CompareTag("Border"))
+            isFlight = false;
+        else isFlight = true;
     }
 
     private void OnCollisionExit(Collision collision)
-    {        
-        isGrounded = false;
+    {
+        isFlight = true;
     }
-
 }

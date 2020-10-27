@@ -45,9 +45,9 @@ public class SaveScoreScript : MonoBehaviour
     public void SaveScore()
     {
         if(Application.platform == RuntimePlatform.Android)
-            path = Path.Combine(Application.persistentDataPath + "/PlayerName.json");
+            path = Path.Combine(Application.persistentDataPath, "PlayerName.json");
         else if(Application.platform == RuntimePlatform.WindowsEditor)          
-            path = Application.dataPath + @"\\\PlayerName.json";
+            path = Application.dataPath + @"/PlayerName.json";
 
         List<PlayerScore> tempList = loadScore.LoadScore();
         PlayerScore playerScore = new PlayerScore(inputText.text, uiManager.ScoreSave);
