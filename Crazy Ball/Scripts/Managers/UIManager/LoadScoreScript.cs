@@ -5,8 +5,7 @@ using Newtonsoft.Json;
 using System;
 
 public class LoadScoreScript : MonoBehaviour
-{
-    //public List<PlayerScore> tempList;
+{    
     string path;
 
     public List<PlayerScore> LoadScore()
@@ -28,8 +27,10 @@ public class LoadScoreScript : MonoBehaviour
 
         try {
             string json = File.ReadAllText(path);
-            scoreList = JsonConvert.DeserializeObject<List<PlayerScore>>(json);            
-            Debug.Log("Лист загружен");
+            scoreList = JsonConvert.DeserializeObject<List<PlayerScore>>(json);
+            //Debug.Log("Лист загружен");
+            ListComparer comparer = new ListComparer();
+            scoreList.Sort(comparer);
             return scoreList;
         }
         catch(Exception) {

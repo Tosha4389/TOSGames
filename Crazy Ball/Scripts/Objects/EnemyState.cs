@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class EnemyState : MonoBehaviour
 {
@@ -9,17 +10,17 @@ public class EnemyState : MonoBehaviour
     private void Awake()
     {
         move = GetComponent<IMovement>();
-        destroyGO = GetComponent<IDestroyGO>();
+        destroyGO = GetComponent<IDestroyGO>();        
     }
 
     private void Start()
     {        
-        move.Jump(Vector3.zero);
+        move.Jump(Vector3.zero);        
     }
 
     private void FixedUpdate()
     {
-        move.Movement(Vector3.back);        
+        move.Movement(Vector3.back);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -27,5 +28,4 @@ public class EnemyState : MonoBehaviour
         if(collision.transform.CompareTag("Destroy"))
             destroyGO.DestroyObjects();
     }
-
 }

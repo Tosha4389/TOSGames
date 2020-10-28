@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +7,6 @@ public class UIManager : MonoBehaviour
 {
     static internal UIManager S;
 
-    [SerializeField] internal Text text;
     [SerializeField] internal TextMeshProUGUI scoreText;
 
     IMenuUI menuUI;  
@@ -17,7 +14,7 @@ public class UIManager : MonoBehaviour
     SaveScoreScript saveScore;
     OutputScore outputScore;
     ScrollContentUI scrollContent;
-    bool onMenu = false;
+
     internal int ScoreSave { get; set; }
 
     private void Awake()
@@ -35,7 +32,7 @@ public class UIManager : MonoBehaviour
         scrollContent = GetComponent<ScrollContentUI>();
     }
 
-    private void Start()
+    void Start()
     {
         StartCoroutine(OutputScoreTable());
     }
@@ -63,7 +60,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void ExitMainMenu()
-    {
+    {        
         menuUI.LoadSceneMenu(0);
     }
 
@@ -90,9 +87,11 @@ public class UIManager : MonoBehaviour
     public IEnumerator OutputScoreTable()
     {
         yield return new WaitForSeconds(0.1f);
+
         if(SceneManager.GetActiveScene().buildIndex == 2) {
             int str = outputScore.OutputScoreUI();
             scrollContent.ScrollTable(str);
-        }        
+        }
+
     }
 }

@@ -10,7 +10,7 @@ public class SaveScoreScript : MonoBehaviour
     
     [SerializeField] GameObject menu;
     [SerializeField] GameObject enterName;
-    [SerializeField] Text inputText;
+    [SerializeField] Text inputName;
 
     UIManager uiManager;
     LoadScoreScript loadScore;
@@ -30,10 +30,12 @@ public class SaveScoreScript : MonoBehaviour
 
     public void OkClick()
     {
-        SaveScore();
-        enterName.SetActive(false);
-        menu.SetActive(true);
-        uiManager.LoadScore();
+        if(inputName.text != "") {
+            SaveScore();
+            enterName.SetActive(false);
+            menu.SetActive(true);
+            uiManager.LoadScore();
+        } else Debug.Log("Введите имя");
     }
 
     public void NoClick()
@@ -50,7 +52,7 @@ public class SaveScoreScript : MonoBehaviour
             path = Application.dataPath + @"/PlayerName.json";
 
         List<PlayerScore> tempList = loadScore.LoadScore();
-        PlayerScore playerScore = new PlayerScore(inputText.text, uiManager.ScoreSave);
+        PlayerScore playerScore = new PlayerScore(inputName.text, uiManager.ScoreSave);
         tempList.Add(playerScore);
 
         string json = JsonConvert.SerializeObject(tempList, Formatting.Indented);

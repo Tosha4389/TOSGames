@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerState : MonoBehaviour
 {
@@ -8,11 +7,13 @@ public class PlayerState : MonoBehaviour
     IMovement move;
     IDestroyGO destroyGO;    
     public bool isFlight = false;
+    AudioSource jumpSound;
 
     private void Awake()
     {        
         move = GetComponent<IMovement>();
         destroyGO = GetComponent<IDestroyGO>();
+        jumpSound = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -48,6 +49,9 @@ public class PlayerState : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if(!jumpSound.isPlaying)
+            jumpSound.Play();
+
         if(collision.transform.CompareTag("Border"))
             isFlight = false;
 

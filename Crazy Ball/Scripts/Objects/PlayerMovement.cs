@@ -11,13 +11,15 @@ public class PlayerMovement : MonoBehaviour, IMovement
         _rigidbody = GetComponent<Rigidbody>();
     }
 
+
+
     public void Movement(Vector3 direction)
     {
-        _rigidbody.AddForce(direction * forceMove * Time.deltaTime, ForceMode.Impulse);
+        _rigidbody.AddForce(direction * forceMove * Time.fixedDeltaTime, ForceMode.Impulse);
     }
 
     public void Jump(Vector3 direction)
     {
-        _rigidbody.AddForce(direction * forceJump * Time.deltaTime, ForceMode.Impulse);
+        _rigidbody.AddForce(direction * forceJump * Time.fixedDeltaTime, ForceMode.Impulse);
     }
 }

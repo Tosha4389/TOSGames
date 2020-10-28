@@ -14,7 +14,7 @@ public class EnemyMovement : MonoBehaviour, IMovement
 
     public void Movement(Vector3 direction)
     {        
-        _rigidbody.AddForce(direction * Time.deltaTime * force, ForceMode.Force);
+        _rigidbody.AddForce(direction * Time.fixedDeltaTime * force, ForceMode.Force);
     }
 
     public void Jump(Vector3 direction)
@@ -24,14 +24,16 @@ public class EnemyMovement : MonoBehaviour, IMovement
 
     IEnumerator DelayJump()
     {
-        _rigidbody.AddForce(Vector3.up * Time.deltaTime * force * heigth, ForceMode.Impulse);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
+        _rigidbody.AddForce(Vector3.up * Time.fixedDeltaTime * heigth, ForceMode.Impulse);
+        yield return new WaitForSeconds(0.5f);
+        _rigidbody.AddForce(Vector3.zero * Time.fixedDeltaTime * heigth, ForceMode.Impulse);
 
         if(Random.value <= 0.5f)
-            _rigidbody.AddForce(Vector3.right * Time.deltaTime * force * heigth, ForceMode.Impulse);
-        else _rigidbody.AddForce(Vector3.left * Time.deltaTime * force * heigth, ForceMode.Impulse);
+            _rigidbody.AddForce(Vector3.right * Time.fixedDeltaTime * force, ForceMode.Impulse);
+        else _rigidbody.AddForce(Vector3.left * Time.fixedDeltaTime * force, ForceMode.Impulse);
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         StartCoroutine(DelayJump());
     }
 }

@@ -6,19 +6,16 @@ public class SpawnEnemyScript : MonoBehaviour
 {
     [SerializeField] List<GameObject> enemyList;
     [SerializeField] Transform spawnPoint;
+    [SerializeField] Transform target;
     [SerializeField] float slowDown;
-    float time;
-
-    private void Awake()
-    {
-        time = Time.time;
-    }
 
     public IEnumerator SpawnEnemy()
     {
         yield return new WaitForSeconds(slowDown);
-        int i = Random.Range(0, enemyList.Count);
-        Instantiate(enemyList[i], spawnPoint.position, Quaternion.identity);
+        int random = Random.Range(0, enemyList.Count);
+        Instantiate(enemyList[random], spawnPoint.position, Quaternion.identity);
         StartCoroutine(SpawnEnemy());
     }
+
+
 }
