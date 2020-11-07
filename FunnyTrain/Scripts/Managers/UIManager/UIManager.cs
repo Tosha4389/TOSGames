@@ -12,9 +12,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject gameOverMenu;
     [SerializeField] TextMeshProUGUI scoreGameOver;
 
-
-    GameManager gameManager;
-
     private void Awake()
     {
         if(S == null) {
@@ -23,11 +20,6 @@ public class UIManager : MonoBehaviour
             Debug.LogError("UIManager.Awake() - создан второй UIManager");
             Destroy(gameObject);
         }
-    }
-
-    private void Start()
-    {
-        gameManager = GameManager.S;
     }
 
     public void ViewScore(int score)

@@ -1,19 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TrainSounds : MonoBehaviour
 {
-    AudioSource audio;
+    AudioSource sounds;
 
     void Awake()
     {
-        audio = GetComponent<AudioSource>();
+        sounds = GetComponent<AudioSource>();
     }
     
     public void Playbeep()
     {
-        if(!audio.isPlaying)
-            audio.Play();
+        if(!sounds.isPlaying)
+            sounds.Play();
     }
 }

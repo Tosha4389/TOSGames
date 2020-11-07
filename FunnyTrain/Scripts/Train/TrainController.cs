@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,7 +17,6 @@ public class TrainController : MonoBehaviour
     Movable movable;
     TrainSounds trainSounds;
     Transform train;
-    InputManager inputManager;
 
     void Awake()
     {
@@ -32,12 +30,6 @@ public class TrainController : MonoBehaviour
         if(trainExit == null)
             trainExit = new StationEvent();
     }
-
-    private void Start()
-    {
-        inputManager = InputManager.S;
-    }
-
 
     void FixedUpdate()
     {
@@ -56,17 +48,9 @@ public class TrainController : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.transform.CompareTag("Station")) {            
-            StopAllCoroutines();
-            trainExit.Invoke();
-        }
-    }
-
     IEnumerator CountVelocity()
     {
-        float time = 0.1f;
+        float time = 0.3f;
         float startZ = train.position.z;
         yield return new WaitForSeconds(time);
         float finishZ = train.position.z;
@@ -75,8 +59,6 @@ public class TrainController : MonoBehaviour
         if(Mathf.Abs(speed) < 0.001f)
             trainEnter.Invoke();
         else trainExit.Invoke();
-
-        yield return new WaitForSeconds(0.5f);
         StartCoroutine(CountVelocity());
     }
 }
